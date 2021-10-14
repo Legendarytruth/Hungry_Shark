@@ -7,8 +7,6 @@ public class MovePlayer : MonoBehaviour
     public CharacterController controller;
     public float walkSpeed = 10f;
     public float sprintSpeed = 20f;
-
-
     public float turnSmooth = 0.1f;
     float turnVelocity;
     private Vector3 moveDir;
