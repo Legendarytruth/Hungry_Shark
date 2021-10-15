@@ -14,8 +14,6 @@ public class GameHandler : MonoBehaviour
     public float maxSpeed = 5f;
     public float minSize = 1f;
     public float maxSize = 3f;
-    private static GameHandler _instance;
-    public static GameHandler Instance { get { return _instance; } }
     // Start is called before the first frame update
     void Start()
     {

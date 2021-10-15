@@ -10,6 +10,7 @@ public class MovePlayer : MonoBehaviour
     public float turnSmooth = 0.1f;
     float turnVelocity;
     private Vector3 moveDir;
+    public Animator anim;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +27,7 @@ public class MovePlayer : MonoBehaviour
 
         if(dir.magnitude >= 0.1f)
         {
+            
             float targetAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnVelocity, turnSmooth);
 
@@ -40,8 +42,13 @@ public class MovePlayer : MonoBehaviour
             {
                 moveDir = (Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward).normalized * walkSpeed * Time.deltaTime;
             }
-
+            anim.SetBool("isMoving", true);
             controller.Move(moveDir);
         }
+        else
+        {
+            anim.SetBool("isMoving", false);
+        }
+        
     }
 }
