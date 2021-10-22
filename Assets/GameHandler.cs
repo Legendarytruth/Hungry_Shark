@@ -14,8 +14,6 @@ public class GameHandler : MonoBehaviour
     public float maxSpeed = 5f;
     public float minSize = 1f;
     public float maxSize = 3f;
-    private static GameHandler _instance;
-    public static GameHandler Instance { get { return _instance; } }
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +21,7 @@ public class GameHandler : MonoBehaviour
 
     private void spawnFish()
     {
-        Vector3 area = new Vector3(Random.Range(-500f, 500f), 1, Random.Range(-500f, 500f));
+        Vector3 area = new Vector3(Random.Range(-250f, 250f), 1, Random.Range(-250f, 250f));
         if(Random.Range(0f, 5f) > 2)
         {
             GameObject fish = Instantiate(pointFish, area, Quaternion.identity) as GameObject;
@@ -61,7 +59,7 @@ public class GameHandler : MonoBehaviour
             fishCount += 1;
         }
 
-        if(playerStats.health < 0)
+        if(playerStats.health <= 0)
         {
             SceneManager.LoadScene("EndScene");
         }

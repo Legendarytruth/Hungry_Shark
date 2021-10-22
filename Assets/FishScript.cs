@@ -5,19 +5,28 @@ using UnityEngine.AI;
 public class FishScript : MonoBehaviour
 {
     private GameHandler gameHandler;
+    private Vector3 moveDir;
+    private Vector3 dir;
     public int points = 5;
     public float speed;
     public bool damage = false;
     public PlayerStats playerStats;
     public Vector3 size;
-    private readonly float changeDirTime = 5f;
+    private float moveDis = 15f;
     private float recentDirChange;
+    public float turnSmooth = 1f;
+    float turnVelocity;
+    float targetAngle;
+
+    public NavMeshAgent nav;
     // Start is called before the first frame update
     public void Start()
     {
-        gameHandler = GameHandler.Instance;
+        gameHandler = GameObject.FindGameObjectWithTag("GameHandler").GetComponent<GameHandler>();
         playerStats = GameObject.FindGameObjectWithTag("PlayerStats").GetComponent<PlayerStats>();
-        //moveFish();
+        nav = gameObject.GetComponent<NavMeshAgent>();
+        nav.speed = speed;
+        moveFish();
     }
 
     public void setSize(Vector3 num)
@@ -51,7 +60,8 @@ public class FishScript : MonoBehaviour
                 else
                 {
                     playerStats.damagePlayer();
-                    playerStats.removePoints(sizePoints);
+                    //to decrease Points for dangerous fish.
+                    //playerStats.removePoints(sizePoints);
                 }
                 
             }
@@ -59,8 +69,27 @@ public class FishScript : MonoBehaviour
             {
                 playerStats.addPoints(sizePoints);
             }
-            
+            gameHandler.decreaseFishCount();
             Destroy(gameObject);
+        }
+        if(other.tag == "Wall")
+        {
+            Debug.Log("Destroyed");
+            gameHandler.decreaseFishCount();
+            Destroy(gameObject);
+        }
+    }
+
+    private void moveFish()
+    {
+        dir = new Vector3(this.transform.position.x + Random.Range(-moveDis, moveDis), 1f, this.transform.position.z + Random.Range(-moveDis, moveDis));
+        nav.SetDestination(dir);
+    }
+    private void Update()
+    {
+       if (nav.remainingDistance <= nav.stoppingDistance)
+        {
+            moveFish();
         }
     }
 }
